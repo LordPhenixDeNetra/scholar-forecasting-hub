@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { StudentForm } from "@/components/StudentForm";
 import { PredictionResult } from "@/components/PredictionResult";
@@ -56,3 +55,6 @@ const Index = () => {
 };
 
 export default Index;
+
+
+// Index
