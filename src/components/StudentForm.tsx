@@ -207,7 +207,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Moy_Gle">Moyenne Générale</Label>
           <Input
-            type="number"
+              // type="number"
+              type="hidden"
             step="0.5"
             id="Moy_Gle"
             name="Moy_Gle"
@@ -219,7 +220,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Moy_sur_Mat_Fond">Moyenne Matières Fondamentales</Label>
           <Input
-            type="number"
+              // type="hidden"
+              type="number"
             step="0.5"
             id="Moy_sur_Mat_Fond"
             name="Moy_sur_Mat_Fond"
@@ -269,7 +271,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Tot_Pts_au_Grp">Total Points au Groupe</Label>
           <Input
-            type="number"
+              // type="hidden"
+              type="number"
             id="Tot_Pts_au_Grp"
             name="Tot_Pts_au_Grp"
             value={formData.Tot_Pts_au_Grp}
@@ -280,7 +283,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Moyenne_au_Grp">Moyenne au Groupe</Label>
           <Input
-            type="number"
+              // type="hidden"
+              type="number"
             step="0.5"
             id="Moyenne_au_Grp"
             name="Moyenne_au_Grp"
@@ -292,6 +296,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Résidence">Résidence</Label>
           <Input
+              // type="hidden"
             type="text"
             id="Résidence"
             name="Résidence"
@@ -314,6 +319,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Centre_Ec">Centre d'examen</Label>
           <Input
+              // type="hidden"
             type="text"
             id="Centre_Ec"
             name="Centre_Ec"

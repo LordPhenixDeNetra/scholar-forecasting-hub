@@ -38,36 +38,37 @@ export const PredictionResult = ({ result }: PredictionResultProps) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div className="p-4 bg-gray-50 rounded-lg">
-            <span className="text-sm text-gray-600">Statut</span>
+            {/*<span className="text-sm text-gray-600">Statut</span>*/}
+            <span className="text-sm text-gray-600">Prédiction</span>
             <p className="font-semibold">{result.status}</p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <span className="text-sm text-gray-600">Score</span>
-            <p className="font-semibold">{result.score.toFixed(2)}</p>
-          </div>
+          {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
+          {/*  <span className="text-sm text-gray-600">Score</span>*/}
+          {/*  <p className="font-semibold">{result.score.toFixed(2)}</p>*/}
+          {/*</div>*/}
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h4 className="font-semibold mb-2">Détails du score</h4>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Score en pourcentage</span>
-              <span>{result.details.score_percentage}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Probabilité de base</span>
-              <span>{result.details.base_probability}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Bonus mention</span>
-              <span>+{result.details.mention_bonus}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Bonus série</span>
-              <span>+{result.details.serie_bonus}%</span>
-            </div>
-          </div>
-        </div>
+        {/*<div className="bg-gray-50 p-4 rounded-lg">*/}
+        {/*  <h4 className="font-semibold mb-2">Détails du score</h4>*/}
+        {/*  <div className="space-y-2">*/}
+        {/*    <div className="flex justify-between">*/}
+        {/*      <span className="text-sm text-gray-600">Score en pourcentage</span>*/}
+        {/*      <span>{result.details.score_percentage}%</span>*/}
+        {/*    </div>*/}
+        {/*    <div className="flex justify-between">*/}
+        {/*      <span className="text-sm text-gray-600">Probabilité de base</span>*/}
+        {/*      <span>{result.details.base_probability}%</span>*/}
+        {/*    </div>*/}
+        {/*    <div className="flex justify-between">*/}
+        {/*      <span className="text-sm text-gray-600">Bonus mention</span>*/}
+        {/*      <span>+{result.details.mention_bonus}%</span>*/}
+        {/*    </div>*/}
+        {/*    <div className="flex justify-between">*/}
+        {/*      <span className="text-sm text-gray-600">Bonus série</span>*/}
+        {/*      <span>+{result.details.serie_bonus}%</span>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
 
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="font-semibold mb-2">Recommandation</h4>
