@@ -207,8 +207,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         <div className="space-y-2">
           <Label htmlFor="Moy_Gle">Moyenne Générale</Label>
           <Input
-              // type="number"
-              type="hidden"
+              type="number"
+              // type="hidden"
             step="0.5"
             id="Moy_Gle"
             name="Moy_Gle"
