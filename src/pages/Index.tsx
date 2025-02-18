@@ -9,8 +9,9 @@ const Index = () => {
   const { toast } = useToast();
 
   const handleSubmit = async (data: StudentInput) => {
+
     try {
-      const response = await fetch("http://ec2-3-95-15-204.compute-1.amazonaws.com:8000/predict", {
+      const response = await fetch("http://ec2-44-204-15-212.compute-1.amazonaws.com:8000/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
