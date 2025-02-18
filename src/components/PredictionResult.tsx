@@ -16,8 +16,10 @@ export const PredictionResult = ({ result }: PredictionResultProps) => {
     return "destructive";
   };
 
+
   return (
     <Card className="p-6 w-full max-w-2xl mx-auto bg-white rounded-lg shadow-sm space-y-6 animate-slideUpAndFade">
+      {/*<Card className="p-6 w-full max-w-2xl mx-auto bg-white rounded-lg shadow-sm space-y-6 animate-slideUpAndFade">*/}
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold">Résultat de la prédiction</h3>
         {result.probability >= 50 ? (
