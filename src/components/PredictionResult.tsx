@@ -36,17 +36,17 @@ export const PredictionResult = ({ result }: PredictionResultProps) => {
           <Progress value={result.probability} className="h-2" />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
+        {/*<div className="grid grid-cols-2 gap-4">*/}
+          {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
             {/*<span className="text-sm text-gray-600">Statut</span>*/}
-            <span className="text-sm text-gray-600">Prédiction</span>
-            <p className="font-semibold">{result.status}</p>
-          </div>
+            {/*<span className="text-sm text-gray-600">Prédiction</span>*/}
+            {/*<p className="font-semibold">{result.status}</p>*/}
+          {/*</div>*/}
           {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
           {/*  <span className="text-sm text-gray-600">Score</span>*/}
           {/*  <p className="font-semibold">{result.score.toFixed(2)}</p>*/}
           {/*</div>*/}
-        </div>
+        {/*</div>*/}
 
         {/*<div className="bg-gray-50 p-4 rounded-lg">*/}
         {/*  <h4 className="font-semibold mb-2">Détails du score</h4>*/}
