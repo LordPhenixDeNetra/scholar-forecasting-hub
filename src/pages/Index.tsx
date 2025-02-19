@@ -46,7 +46,18 @@ const Index = () => {
         <UniversityPredictionLayout
             onSubmitWithPrediction={handleSubmit}
             headerContent={
+              // <div className="text-center mb-8">
+              //   <img src="/logo_uacd.png" alt="Logo DIORES" className="w-8 h-8 text-center"/>
+              //   <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              //     DIORES
+              //   </h1>
+              //   <p className="mt-3 text-base text-gray-500 sm:text-lg">
+              //     Prédiction de la réussite des étudiants
+              //   </p>
+              // </div>
+
               <div className="text-center mb-8">
+                <img src="/logo_uacd.png" alt="Logo DIORES" className="w-12 h-12 mx-auto"/>
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                   DIORES
                 </h1>
@@ -54,40 +65,16 @@ const Index = () => {
                   Prédiction de la réussite des étudiants
                 </p>
               </div>
+
             }
         >
-          {predictionResult && <PredictionResult result={predictionResult} />}
+          {predictionResult && <PredictionResult result={predictionResult}/>}
         </UniversityPredictionLayout>
       </div>
   );
 };
 
 export default Index;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
