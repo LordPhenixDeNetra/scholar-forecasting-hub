@@ -147,7 +147,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       Nbre_Fois_au_BAC: 1,
       Tot_Pts_au_Grp: 0,
       Sexe: "",
-      Série: "S1",
+      Série: "",
       Age_en_Décembre_2018: undefined,
       MATH: undefined,
       SCPH: undefined,
@@ -555,16 +555,43 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                         </div>
                         <div>
                           <Label htmlFor="Résidence">Résidence *</Label>
-                          <Input
-                              type="text"
+                          {/*<Input*/}
+                          {/*    type="text"*/}
+                          {/*    id="Résidence"*/}
+                          {/*    name="Résidence"*/}
+                          {/*    value={formData.Résidence}*/}
+                          {/*    onChange={handleChange}*/}
+                          {/*    className="rounded-lg"*/}
+                          {/*    required*/}
+                          {/*/>*/}
+
+                          <select
                               id="Résidence"
                               name="Résidence"
                               value={formData.Résidence}
                               onChange={handleChange}
-                              className="rounded-lg"
+                              className="w-full border rounded-lg p-2"
                               required
-                          />
+                          >
+                            <option value="" disabled selected>Choisir...</option>
+                            <option value="Dakar">Dakar</option>
+                            <option value="Diourbel">Diourbel</option>
+                            <option value="Fatick">Fatick</option>
+                            <option value="Kaolack">Kaolack</option>
+                            <option value="Kaffrine">Kaffrine</option>
+                            <option value="Kédougou">Kédougou</option>
+                            <option value="Kolda">Kolda</option>
+                            <option value="Louga">Louga</option>
+                            <option value="Matam">Matam</option>
+                            <option value="Saint-Louis">Saint-Louis</option>
+                            <option value="Sédhiou">Sédhiou</option>
+                            <option value="Tambacounda">Tambacounda</option>
+                            <option value="Thiès">Thiès</option>
+                            <option value="Ziguinchor">Ziguinchor</option>
+
+                          </select>
                         </div>
+
                         <div>
                           <Label htmlFor="Ets_de_provenance">Établissement de provenance *</Label>
                           <Input

@@ -48,6 +48,47 @@ interface UniversityPredictionLayoutProps {
     headerContent?: ReactNode;
     children?: ReactNode;
 }
+//
+// const universities: University[] = [
+//     {
+//         id: "ucad",
+//         name: "Université Cheikh Anta Diop (UCAD)",
+//         faculties: [
+//             {
+//                 id: "fst",
+//                 name: "Faculté des Sciences et Technologies",
+//                 departments: [
+//                     { id: "mpi", name: "Mathématiques Physique Informatique (MPI)" },
+//                     { id: "pc", name: "Physique Chimie Science de la Matiere (PCSM)" },
+//                     { id: "sn", name: "Biologie Chimie Geo-Science (BCGS)" },
+//                 ],
+//             },
+//             {
+//                 id: "fsjp",
+//                 name: "Faculté des Sciences Juridiques et Politiques",
+//                 departments: [
+//                     { id: "droit", name: "Droit" },
+//                     { id: "sciences-po", name: "Sciences Politiques" },
+//                 ],
+//             },
+//         ],
+//     },
+//     {
+//         id: "uam",
+//         name: "Université Amadou Mahtar Mbow (UAM)",
+//         faculties: [
+//             {
+//                 id: "set",
+//                 name: "Sciences, Engineering et Technologies",
+//                 departments: [
+//                     { id: "info", name: "Informatique" },
+//                     { id: "genie-civil", name: "Génie Civil" },
+//                 ],
+//             },
+//         ],
+//     },
+// ];
+//
 
 const universities: University[] = [
     {
@@ -56,10 +97,10 @@ const universities: University[] = [
         faculties: [
             {
                 id: "fst",
-                name: "Faculté des Sciences et Technologies",
+                name: "Faculté des Sciences et Techniques",
                 departments: [
                     { id: "mpi", name: "Mathématiques Physique Informatique (MPI)" },
-                    { id: "pc", name: "Physique Chimie Science de la Matiere (PCSM)" },
+                    { id: "pcsm", name: "Physique Chimie Science de la Matière (PCSM)" },
                     { id: "sn", name: "Biologie Chimie Geo-Science (BCGS)" },
                 ],
             },
@@ -71,6 +112,40 @@ const universities: University[] = [
                     { id: "sciences-po", name: "Sciences Politiques" },
                 ],
             },
+            {
+                id: "fseg",
+                name: "Faculté des Sciences Économiques et de Gestion",
+                departments: [
+                    { id: "eco", name: "Économie" },
+                    { id: "gestion", name: "Gestion" },
+                ],
+            },
+            {
+                id: "fmpo",
+                name: "Faculté de Médecine, Pharmacie et Odontologie",
+                departments: [
+                    { id: "medecine", name: "Médecine" },
+                    { id: "pharmacie", name: "Pharmacie" },
+                    { id: "odontologie", name: "Odontologie" },
+                ],
+            },
+            {
+                id: "flsh",
+                name: "Faculté des Lettres et Sciences Humaines",
+                departments: [
+                    { id: "lettres", name: "Lettres Modernes" },
+                    { id: "philosophie", name: "Philosophie" },
+                    { id: "histoire", name: "Histoire" },
+                ],
+            },
+            {
+                id: "fastef",
+                name: "Faculté des Sciences et Technologies de l’Éducation et de la Formation",
+                departments: [
+                    { id: "sciences-education", name: "Sciences de l’Éducation" },
+                    { id: "formation", name: "Formation des Enseignants" },
+                ],
+            },
         ],
     },
     {
@@ -79,15 +154,113 @@ const universities: University[] = [
         faculties: [
             {
                 id: "set",
-                name: "Sciences, Engineering et Technologies",
+                name: "Faculté des Sciences, de l'Ingénierie et des Technologies",
                 departments: [
                     { id: "info", name: "Informatique" },
                     { id: "genie-civil", name: "Génie Civil" },
+                    { id: "genie-electrique", name: "Génie Électrique" },
+                ],
+            },
+            {
+                id: "shs",
+                name: "Faculté des Sciences Humaines et Sociales",
+                departments: [
+                    { id: "sciences-education", name: "Sciences de l’Éducation" },
+                    { id: "lettres", name: "Lettres" },
+                    { id: "histoire", name: "Histoire" },
                 ],
             },
         ],
     },
+    {
+        id: "ugb",
+        name: "Université Gaston Berger (UGB)",
+        faculties: [
+            {
+                id: "sat",
+                name: "Faculté des Sciences Appliquées et de Technologie",
+                departments: [
+                    { id: "info", name: "Informatique" },
+                    { id: "maths", name: "Mathématiques" },
+                    { id: "physique", name: "Physique" },
+                ],
+            },
+            {
+                id: "ses",
+                name: "Faculté des Sciences Économiques et de Gestion",
+                departments: [
+                    { id: "eco", name: "Économie" },
+                    { id: "gestion", name: "Gestion" },
+                ],
+            },
+            {
+                id: "lsh",
+                name: "Faculté des Lettres et Sciences Humaines",
+                departments: [
+                    { id: "lettres", name: "Lettres Modernes" },
+                    { id: "philosophie", name: "Philosophie" },
+                    { id: "histoire", name: "Histoire" },
+                ],
+            },
+            {
+                id: "sante",
+                name: "Faculté des Sciences de la Santé",
+                departments: [
+                    { id: "medecine", name: "Médecine" },
+                    { id: "pharmacie", name: "Pharmacie" },
+                    { id: "odontologie", name: "Odontologie" },
+                ],
+            },
+        ],
+    },
+    {
+        id: "uadb",
+        name: "Université Alioune Diop de Bambey (UADB)",
+        faculties: [
+            {
+                id: "sat",
+                name: "Faculté des Sciences Appliquées et de Technologie",
+                departments: [
+                    { id: "genie-rural", name: "Génie Rural" },
+                    { id: "agroalimentaire", name: "Agroalimentaire" },
+                ],
+            },
+            {
+                id: "sje",
+                name: "Faculté des Sciences Juridiques et Économiques",
+                departments: [
+                    { id: "droit", name: "Droit" },
+                    { id: "eco", name: "Économie" },
+                ],
+            },
+        ],
+    },
+    {
+        id: "uasz",
+        name: "Université Assane Seck de Ziguinchor (UASZ)",
+        faculties: [
+            {
+                id: "sst",
+                name: "Faculté des Sciences et Technologies",
+                departments: [
+                    { id: "info", name: "Informatique" },
+                    { id: "maths", name: "Mathématiques" },
+                    { id: "physique", name: "Physique" },
+                ],
+            },
+            {
+                id: "shs",
+                name: "Faculté des Sciences Humaines et Sociales",
+                departments: [
+                    { id: "histoire", name: "Histoire" },
+                    { id: "sociologie", name: "Sociologie" },
+                ],
+            },
+        ],
+    },
+
 ];
+
 
 
 export function UniversityPredictionLayout({
