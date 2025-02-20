@@ -1,18 +1,22 @@
 import { useState } from "react";
 import { StudentForm } from "@/components/StudentForm";
-import { PredictionResult } from "@/components/PredictionResult";
+// import { PredictionResult } from "@/components/PredictionResult";
+import { PredictionResultV2 } from "@/components/PredictionResultV2";
 import { UniversityPredictionLayout } from "@/components/UniversityPredictionLayout";
-import type { StudentInput, PredictionResponse } from "@/types/student";
+import type {StudentInput, PredictionResponseV2} from "@/types/student";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const [predictionResult, setPredictionResult] = useState<PredictionResponse | null>(null);
+  // const [predictionResult, setPredictionResult] = useState<PredictionResponse | null>(null);
+  const [predictionResultV2, setPredictionResult] = useState<PredictionResponseV2 | null>(null);
+
   const { toast } = useToast();
 
   const handleSubmit = async (data: StudentInput) => {
-
+    // ec2-3-87-44-69.compute-1.amazonaws.com
     try {
-      const response = await fetch("http://ec2-3-87-44-69.compute-1.amazonaws.com:8000/predict", {
+      const response = await fetch("http://ec2-3-87-44-69.compute-1.amazonaws.com:8000/predict_v2", {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,6 +62,7 @@ const Index = () => {
 
               <div className="text-center mb-8">
                 <img src="/logo_uacd.png" alt="Logo DIORES" className="w-12 h-12 mx-auto"/>
+                <span className="text-2xl"> Dispositif Intelligent d'Orientation et de Réorientation des Étudiants du Supérieur </span>
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                   DIORES
                 </h1>
@@ -68,7 +73,8 @@ const Index = () => {
 
             }
         >
-          {predictionResult && <PredictionResult result={predictionResult}/>}
+          {/*{predictionResult && <PredictionResult result={predictionResult}/>}*/}
+          {predictionResultV2 && <PredictionResultV2 result={predictionResultV2}/>}
         </UniversityPredictionLayout>
       </div>
   );

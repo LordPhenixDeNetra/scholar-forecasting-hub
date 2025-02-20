@@ -39,3 +39,22 @@ export interface PredictionResponse {
   };
   recommendation: string;
 }
+
+
+export interface PredictionResponseV2 {
+  status: string;
+  score: number;
+  orientation_probability: number;
+  success_probability: number;
+  orientation_probability_message: string;
+  success_probability_message : string;
+
+
+  // details: {
+  //   score_percentage: number;
+  //   base_probability: number;
+  //   mention_bonus: number;
+  //   serie_bonus: number;
+  // };
+  // recommendation: string;
+}

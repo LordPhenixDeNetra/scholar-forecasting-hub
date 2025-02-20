@@ -28,7 +28,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     Nbre_Fois_au_BAC: 1,
     Tot_Pts_au_Grp: 0,
     Sexe: "",
-    Série: "S1",
+    Série: "",
     Age_en_Décembre_2018: undefined,
     MATH: undefined,
     SCPH: undefined,
@@ -57,7 +57,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       return "La valeur doit être comprise entre 1 et 20.";
     }
 
-    if (name === "Age_en_Décembre_2018" && (value < 10 || value > 30)) {
+    if (name === "Age_en_Décembre_2018" && (value < 16 || value > 30)) {
       return "L'âge doit être compris entre 10 et 30 ans.";
     }
 
