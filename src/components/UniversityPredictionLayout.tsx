@@ -308,7 +308,7 @@ export function UniversityPredictionLayout({
                     </h2>
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                    Sélectionnez votre parcours
+                    Sélectionnez une filière
                 </p>
             </div>
 
