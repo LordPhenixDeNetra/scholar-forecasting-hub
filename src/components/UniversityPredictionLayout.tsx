@@ -48,47 +48,6 @@ interface UniversityPredictionLayoutProps {
     headerContent?: ReactNode;
     children?: ReactNode;
 }
-//
-// const universities: University[] = [
-//     {
-//         id: "ucad",
-//         name: "Université Cheikh Anta Diop (UCAD)",
-//         faculties: [
-//             {
-//                 id: "fst",
-//                 name: "Faculté des Sciences et Technologies",
-//                 departments: [
-//                     { id: "mpi", name: "Mathématiques Physique Informatique (MPI)" },
-//                     { id: "pc", name: "Physique Chimie Science de la Matiere (PCSM)" },
-//                     { id: "sn", name: "Biologie Chimie Geo-Science (BCGS)" },
-//                 ],
-//             },
-//             {
-//                 id: "fsjp",
-//                 name: "Faculté des Sciences Juridiques et Politiques",
-//                 departments: [
-//                     { id: "droit", name: "Droit" },
-//                     { id: "sciences-po", name: "Sciences Politiques" },
-//                 ],
-//             },
-//         ],
-//     },
-//     {
-//         id: "uam",
-//         name: "Université Amadou Mahtar Mbow (UAM)",
-//         faculties: [
-//             {
-//                 id: "set",
-//                 name: "Sciences, Engineering et Technologies",
-//                 departments: [
-//                     { id: "info", name: "Informatique" },
-//                     { id: "genie-civil", name: "Génie Civil" },
-//                 ],
-//             },
-//         ],
-//     },
-// ];
-//
 
 const universities: University[] = [
     {
@@ -295,7 +254,97 @@ export function UniversityPredictionLayout({
         setIsFormSubmitted(false);
     };
 
-    // Reste du code existant pour renderBreadcrumbs() et renderSidebar()...
+    // const renderSidebar = () => (
+    //     <div className="h-screen flex flex-col">
+    //         {/* En-tête du sidebar */}
+    //         <div className="p-6 border-b bg-white">
+    //             <div className="flex items-center gap-3">
+    //                 <School className="w-6 h-6 text-primary" />
+    //                 <h2 className="text-xl font-semibold text-gray-900">
+    //                     DIORES
+    //                 </h2>
+    //             </div>
+    //             <p className="mt-2 text-sm text-gray-500">
+    //                 Sélectionnez une filière
+    //             </p>
+    //         </div>
+    //
+    //         {/* Contenu scrollable */}
+    //         <ScrollArea className="flex-1 px-3 py-4">
+    //             <Accordion
+    //                 type="single"
+    //                 collapsible
+    //                 className="space-y-2"
+    //             >
+    //                 {universities.map((university) => (
+    //                     <AccordionItem
+    //                         key={university.id}
+    //                         value={university.id}
+    //                         className="border rounded-lg bg-white shadow-sm"
+    //                     >
+    //                         <AccordionTrigger className="px-4 py-3 hover:no-underline group">
+    //                             <div className="flex items-center gap-3">
+    //                                 <Building2 className="w-5 h-5 text-primary/80 group-hover:text-primary" />
+    //                                 <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+    //                 {university.name}
+    //               </span>
+    //                             </div>
+    //                         </AccordionTrigger>
+    //                         <AccordionContent className="px-4 pb-3 pt-1">
+    //                             <Accordion type="single" collapsible className="space-y-2">
+    //                                 {university.faculties.map((faculty) => (
+    //                                     <AccordionItem
+    //                                         key={faculty.id}
+    //                                         value={faculty.id}
+    //                                         className="border border-gray-100 rounded-md overflow-hidden"
+    //                                     >
+    //                                         <AccordionTrigger className="px-3 py-2 hover:no-underline group">
+    //                                             <div className="flex items-center gap-2">
+    //                                                 <BookOpen className="w-4 h-4 text-primary/70 group-hover:text-primary" />
+    //                                                 <span className="text-sm text-gray-600 group-hover:text-gray-900">
+    //                         {faculty.name}
+    //                       </span>
+    //                                             </div>
+    //                                         </AccordionTrigger>
+    //                                         <AccordionContent className="px-2 pb-2">
+    //                                             <div className="space-y-1 mt-1">
+    //                                                 {faculty.departments.map((department) => (
+    //                                                     <Button
+    //                                                         key={department.id}
+    //                                                         variant={selectedDepartment === department.id ? "default" : "ghost"}
+    //                                                         className={`w-full justify-start text-sm py-2 px-3 rounded-md ${
+    //                                                             selectedDepartment === department.id
+    //                                                                 ? "bg-primary/10 text-primary hover:bg-primary/15"
+    //                                                                 : "hover:bg-gray-100"
+    //                                                         }`}
+    //                                                         onClick={() => handleSelectionChange(
+    //                                                             university.id,
+    //                                                             faculty.id,
+    //                                                             department.id
+    //                                                         )}
+    //                                                     >
+    //                                                         <GraduationCap className={`w-4 h-4 mr-2 ${
+    //                                                             selectedDepartment === department.id
+    //                                                                 ? "text-primary"
+    //                                                                 : "text-gray-500"
+    //                                                         }`} />
+    //                                                         <span className="text-left line-clamp-2">
+    //                             {department.name}
+    //                           </span>
+    //                                                     </Button>
+    //                                                 ))}
+    //                                             </div>
+    //                                         </AccordionContent>
+    //                                     </AccordionItem>
+    //                                 ))}
+    //                             </Accordion>
+    //                         </AccordionContent>
+    //                     </AccordionItem>
+    //                 ))}
+    //             </Accordion>
+    //         </ScrollArea>
+    //     </div>
+    // );
 
     const renderSidebar = () => (
         <div className="h-screen flex flex-col">
@@ -314,81 +363,134 @@ export function UniversityPredictionLayout({
 
             {/* Contenu scrollable */}
             <ScrollArea className="flex-1 px-3 py-4">
-                <Accordion
-                    type="single"
-                    collapsible
-                    className="space-y-2"
-                >
+                <Accordion type="single" collapsible className="space-y-2">
                     {universities.map((university) => (
                         <AccordionItem
                             key={university.id}
                             value={university.id}
-                            className="border rounded-lg bg-white shadow-sm"
+                            className={`border rounded-lg bg-white shadow-sm transition-all duration-300 ${
+                                university.id === "ucad"
+                                    ? "hover:shadow-md hover:border-primary/20 hover:scale-[1.01]"
+                                    : "opacity-50"
+                            }`}
+                            title={university.id !== "ucad" ? "Indisponible" : ""}
+                            style={university.id !== "ucad" ? { cursor: "not-allowed" } : undefined}
                         >
-                            <AccordionTrigger className="px-4 py-3 hover:no-underline group">
+                            <AccordionTrigger
+                                className={`px-4 py-3 hover:no-underline group ${
+                                    university.id === "ucad"
+                                        ? "transition-colors duration-300 hover:bg-primary/5"
+                                        : ""
+                                }`}
+                                disabled={university.id !== "ucad"}
+                            >
                                 <div className="flex items-center gap-3">
-                                    <Building2 className="w-5 h-5 text-primary/80 group-hover:text-primary" />
-                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                    {university.name}
-                  </span>
+                                    <Building2 className={`w-5 h-5 transition-all duration-300 ${
+                                        university.id === "ucad"
+                                            ? "text-primary/80 group-hover:text-primary group-hover:scale-110"
+                                            : "text-gray-400"
+                                    }`} />
+                                    <span className={`text-sm font-medium transition-colors duration-300 ${
+                                        university.id === "ucad"
+                                            ? "text-gray-700 group-hover:text-primary"
+                                            : "text-gray-400"
+                                    }`}>
+                                   {university.name}
+                                        {university.id !== "ucad" && (
+                                            <span className="ml-2 text-xs text-gray-400">
+                                           (Bientôt disponible)
+                                       </span>
+                                        )}
+                               </span>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="px-4 pb-3 pt-1">
-                                <Accordion type="single" collapsible className="space-y-2">
-                                    {university.faculties.map((faculty) => (
-                                        <AccordionItem
-                                            key={faculty.id}
-                                            value={faculty.id}
-                                            className="border border-gray-100 rounded-md overflow-hidden"
-                                        >
-                                            <AccordionTrigger className="px-3 py-2 hover:no-underline group">
-                                                <div className="flex items-center gap-2">
-                                                    <BookOpen className="w-4 h-4 text-primary/70 group-hover:text-primary" />
-                                                    <span className="text-sm text-gray-600 group-hover:text-gray-900">
-                            {faculty.name}
-                          </span>
-                                                </div>
-                                            </AccordionTrigger>
-                                            <AccordionContent className="px-2 pb-2">
-                                                <div className="space-y-1 mt-1">
-                                                    {faculty.departments.map((department) => (
-                                                        <Button
-                                                            key={department.id}
-                                                            variant={selectedDepartment === department.id ? "default" : "ghost"}
-                                                            className={`w-full justify-start text-sm py-2 px-3 rounded-md ${
-                                                                selectedDepartment === department.id
-                                                                    ? "bg-primary/10 text-primary hover:bg-primary/15"
-                                                                    : "hover:bg-gray-100"
-                                                            }`}
-                                                            onClick={() => handleSelectionChange(
-                                                                university.id,
-                                                                faculty.id,
-                                                                department.id
+
+                            {university.id === "ucad" && (
+                                <AccordionContent className="px-4 pb-3 pt-1">
+                                    <Accordion type="single" collapsible className="space-y-2">
+                                        {university.faculties.map((faculty) => (
+                                            <AccordionItem
+                                                key={faculty.id}
+                                                value={faculty.id}
+                                                className={`border border-gray-100 rounded-md overflow-hidden transition-all duration-300 ${
+                                                    faculty.id === "fst"
+                                                        ? "hover:border-primary/20 hover:bg-primary/5"
+                                                        : "opacity-50"
+                                                }`}
+                                                title={faculty.id !== "fst" ? "Indisponible" : ""}
+                                                style={faculty.id !== "fst" ? { cursor: "not-allowed" } : undefined}
+                                            >
+                                                <AccordionTrigger
+                                                    className={`px-3 py-2 hover:no-underline group ${
+                                                        faculty.id === "fst"
+                                                            ? "transition-all duration-300"
+                                                            : ""
+                                                    }`}
+                                                    disabled={faculty.id !== "fst"}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <BookOpen className={`w-4 h-4 transition-transform duration-300 ${
+                                                            faculty.id === "fst"
+                                                                ? "text-primary/70 group-hover:text-primary group-hover:rotate-6"
+                                                                : "text-gray-400"
+                                                        }`} />
+                                                        <span className={`text-sm transition-colors duration-300 ${
+                                                            faculty.id === "fst"
+                                                                ? "text-gray-600 group-hover:text-primary"
+                                                                : "text-gray-400"
+                                                        }`}>
+                                                       {faculty.name}
+                                                            {faculty.id !== "fst" && (
+                                                                <span className="ml-2 text-xs text-gray-400">
+                                                               (Bientôt disponible)
+                                                           </span>
                                                             )}
-                                                        >
-                                                            <GraduationCap className={`w-4 h-4 mr-2 ${
-                                                                selectedDepartment === department.id
-                                                                    ? "text-primary"
-                                                                    : "text-gray-500"
-                                                            }`} />
-                                                            <span className="text-left line-clamp-2">
-                                {department.name}
-                              </span>
-                                                        </Button>
-                                                    ))}
-                                                </div>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    ))}
-                                </Accordion>
-                            </AccordionContent>
+                                                   </span>
+                                                    </div>
+                                                </AccordionTrigger>
+
+                                                {faculty.id === "fst" && (
+                                                    <AccordionContent className="px-2 pb-2">
+                                                        <div className="space-y-1 mt-1">
+                                                            {faculty.departments.map((department) => (
+                                                                <Button
+                                                                    key={department.id}
+                                                                    variant={selectedDepartment === department.id ? "default" : "ghost"}
+                                                                    className={`w-full justify-start text-sm py-2 px-3 rounded-md transition-all duration-300 ${
+                                                                        selectedDepartment === department.id
+                                                                            ? "bg-primary/10 text-primary hover:bg-primary/20"
+                                                                            : "hover:bg-primary/5 hover:translate-x-1"
+                                                                    }`}
+                                                                    onClick={() => handleSelectionChange(
+                                                                        university.id,
+                                                                        faculty.id,
+                                                                        department.id
+                                                                    )}
+                                                                >
+                                                                    <GraduationCap className={`w-4 h-4 mr-2 transition-all duration-300 ${
+                                                                        selectedDepartment === department.id
+                                                                            ? "text-primary transform rotate-12"
+                                                                            : "text-gray-500 group-hover:text-primary group-hover:scale-110"
+                                                                    }`} />
+                                                                    <span className="text-left line-clamp-2 transition-colors duration-300">
+                                                                   {department.name}
+                                                               </span>
+                                                                </Button>
+                                                            ))}
+                                                        </div>
+                                                    </AccordionContent>
+                                                )}
+                                            </AccordionItem>
+                                        ))}
+                                    </Accordion>
+                                </AccordionContent>
+                            )}
                         </AccordionItem>
                     ))}
                 </Accordion>
             </ScrollArea>
         </div>
     );
-
 
     const renderBreadcrumbs = () => {
         if (!selectedUniversity) return null;
@@ -495,6 +597,80 @@ export function UniversityPredictionLayout({
                         </div>
                     )}
                 </div>
+
+                {/*Footer*/}
+                <footer className="bg-white border-t border-gray-200 py-8 mt-auto">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {/* Section À propos */}
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <School className="w-5 h-5 text-primary" />
+                                    À propos de DIORES
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Un système intelligent de prédiction de la réussite des étudiants,
+                                    développé pour accompagner les parcours académiques au Sénégal.
+                                </p>
+                            </div>
+
+                            {/* Section Contact */}
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <Building2 className="w-5 h-5 text-primary" />
+                                    Contact
+                                </h3>
+                                <ul className="space-y-2 text-sm text-gray-600">
+                                    <li>Université Cheikh Anta Diop de Dakar</li>
+                                    {/*<li>Faculté des Sciences et Techniques</li>*/}
+                                    {/*<li>Département de Mathématiques et Informatique</li>*/}
+                                </ul>
+                            </div>
+
+                            {/* Section Liens rapides */}
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <BookOpen className="w-5 h-5 text-primary" />
+                                    Liens rapides
+                                </h3>
+                                <div className="grid grid-cols-1 gap-2">
+                                    <Button
+                                        variant="link"
+                                        className="text-primary hover:text-primary/80 p-0 h-auto font-normal justify-start"
+                                    >
+                                        Guide d'utilisation
+                                    </Button>
+                                    <Button
+                                        variant="link"
+                                        className="text-primary hover:text-primary/80 p-0 h-auto font-normal justify-start"
+                                    >
+                                        Mentions légales
+                                    </Button>
+                                    <Button
+                                        variant="link"
+                                        className="text-primary hover:text-primary/80 p-0 h-auto font-normal justify-start"
+                                    >
+                                        Politique de confidentialité
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Copyright */}
+                        <div className="mt-8 pt-8 border-t border-gray-200">
+                            <div>
+                                <img src="/grantees.png" alt="Logo DIORES" className="w-88 h-14 mx-auto"/>
+                            </div>
+                            <p className="text-center text-sm text-gray-500 my-3">
+                                © {new Date().getFullYear()} DIORES. Tous droits réservés.
+                                <span className="block sm:inline sm:ml-1">
+                                    Développé à l'UCAD.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+
             </main>
         </div>
     );

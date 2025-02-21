@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StudentInput } from "@/types/student";
+import {Academie, Region, StudentInput} from "@/types/student";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -20,6 +20,10 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
   const [isCurrentStepValid, setIsCurrentStepValid] = useState(false);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [regions, setRegions] = useState<Region[]>([]);
+  const [academies, setAcademies] = useState<Academie[]>([]);
+  const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
 
   const [formData, setFormData] = useState<StudentInput>({
     Année_BAC: 2018,
@@ -64,19 +68,45 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     return null;
   };
 
+  const loadRegions = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/regions/");
+      if (!response.ok) throw new Error("Erreur lors du chargement des régions");
+      const data = await response.json();
+      setRegions(data);
+    } catch (error) {
+      console.error("Erreur:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les régions",
+        variant: "destructive",
+      });
+    }
+  };
 
-  // const validateCurrentStep = (): boolean => {
-  //   const fieldsToValidate: string[] =
-  //       step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Ets_de_provenance"] :
-  //           step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
-  //               ["MATH", "SCPH", "FR", "PHILO", "AN", "Série", "Mention"];
-  //
-  //   return fieldsToValidate.every(field => validateField(field, formData[field]) === null);
-  // };
+  const loadAcademies = async (regionId: number) => {
+    try {
+      const response = await fetch(`http://localhost:8000/regions/${regionId}/academies`);
+      if (!response.ok) throw new Error("Erreur lors du chargement des académies");
+      const data = await response.json();
+      setAcademies(data);
+    } catch (error) {
+      console.error("Erreur:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les académies",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    loadRegions();
+  }, []);
 
   const validateCurrentStep = (): boolean => {
     const fieldsToValidate: string[] =
-        step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Ets_de_provenance"] :
+        step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"] :
             step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
                 ["MATH", "SCPH", "FR", "PHILO", "AN", "Série"];
 
@@ -108,15 +138,30 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     setIsCurrentStepValid(isValid);
   }, [formData, step]);
 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const parsedValue = e.target.type === "number" ? parseFloat(value) : value;
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: parsedValue
-    }));
+    if (name === "Résidence") {
+      const region = regions.find(r => r.name === value);
+      if (region) {
+        setSelectedRegionId(region.id);
+        loadAcademies(region.id);
+      }
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        Académie_de_Ets_Prov: "" // Réinitialiser l'académie quand la région change
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: e.target.type === "number" ? parseFloat(value) || 0 : value
+      }));
+    }
   };
+
+
 
   const handleNext = () => {
     const isValid = validateCurrentStep();
@@ -168,71 +213,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       REGION_DE_NAISSANCE: ""
     });
   };
-
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //
-  //   if (step !== totalSteps) {
-  //     handleNext();
-  //     return;
-  //   }
-  //
-  //   if (!isCurrentStepValid) {
-  //     toast({
-  //       title: "Erreur de validation",
-  //       description: "Veuillez corriger les erreurs avant de soumettre.",
-  //       variant: "destructive"
-  //     });
-  //     return;
-  //   }
-  //
-  //   setIsSubmitting(true);
-  //   toast({
-  //     title: "Traitement en cours",
-  //     description: "Veuillez patienter pendant la prédiction...",
-  //     duration: 2000,
-  //   });
-  //
-  //   try {
-  //     const preparedData = {
-  //       ...formData,
-  //       Age_en_Décembre_2018: Number(formData.Age_en_Décembre_2018),
-  //       MATH: Number(formData.MATH),
-  //       SCPH: Number(formData.SCPH),
-  //       FR: Number(formData.FR),
-  //       PHILO: Number(formData.PHILO),
-  //       AN: Number(formData.AN),
-  //       Moy_nde: Number(formData.Moy_nde),
-  //       Moy_ère: Number(formData.Moy_ère),
-  //       Moy_S_Term: Number(formData.Moy_S_Term),
-  //       Moy_S_Term_1: Number(formData.Moy_S_Term_1),
-  //       Année_BAC: 2018,
-  //       Nbre_Fois_au_BAC: 1,
-  //       Groupe_Résultat: 1,
-  //       Tot_Pts_au_Grp: formData.Tot_Pts_au_Grp || 0
-  //     };
-  //
-  //     console.log("Données envoyées:", preparedData);
-  //     await onSubmit(preparedData);
-  //
-  //     toast({
-  //       title: "Prédiction réussie",
-  //       description: "Les résultats ont été calculés avec succès !",
-  //       duration: 3000,
-  //     });
-  //   } catch (error) {
-  //     console.error("Erreur de soumission:", error);
-  //     toast({
-  //       title: "Erreur",
-  //       description: "Une erreur est survenue lors de la prédiction. Veuillez réessayer.",
-  //       variant: "destructive",
-  //       duration: 3000,
-  //     });
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -293,206 +273,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     }
   };
 
-
-
-  // return (
-  //     <Card className="p-4 max-w-2xl mx-auto">
-  //       {/*<CardHeader>*/}
-  //       {/*  <CardTitle>Étape {step} sur {totalSteps}</CardTitle>*/}
-  //       {/*</CardHeader>*/}
-  //       <CardHeader>
-  //         <CardTitle>
-  //           {(() => {
-  //             switch (step) {
-  //               case 1:
-  //                 return "Informations Personnelles";
-  //               case 2:
-  //                 return "Moyennes Scolaires";
-  //               case 3:
-  //                 return "Notes et Informations BAC";
-  //               default:
-  //                 return "";
-  //             }
-  //           })()}
-  //           <span className="text-gray-500 text-sm ml-2">
-  //             (Étape {step} sur {totalSteps})
-  //           </span>
-  //         </CardTitle>
-  //       </CardHeader>
-  //
-  //       <CardContent>
-  //         <Progress value={(step / totalSteps) * 100} className="mb-4 h-2" />
-  //         <form onSubmit={handleSubmit} className="space-y-6">
-  //           {step === 1 && (
-  //               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  //                 <div>
-  //                   <Label htmlFor="Sexe">Sexe *</Label>
-  //                   <select
-  //                       id="Sexe"
-  //                       name="Sexe"
-  //                       value={formData.Sexe}
-  //                       onChange={handleChange}
-  //                       className="w-full border rounded-lg p-2"
-  //                       required
-  //                   >
-  //                     <option value="" disabled>Choisir...</option>
-  //                     <option value="M">Masculin</option>
-  //                     <option value="F">Féminin</option>
-  //                   </select>
-  //                 </div>
-  //                 <div>
-  //                   <Label htmlFor="Age_en_Décembre_2018">Âge en décembre 2018 *</Label>
-  //                   <Input
-  //                       type="number"
-  //                       id="Age_en_Décembre_2018"
-  //                       name="Age_en_Décembre_2018"
-  //                       value={formData.Age_en_Décembre_2018 ?? ""}
-  //                       onChange={handleChange}
-  //                       min={10}
-  //                       max={30}
-  //                       className="rounded-lg"
-  //                       required
-  //                   />
-  //                 </div>
-  //                 <div>
-  //                   <Label htmlFor="Résidence">Résidence *</Label>
-  //                   <Input
-  //                       type="text"
-  //                       id="Résidence"
-  //                       name="Résidence"
-  //                       value={formData.Résidence}
-  //                       onChange={handleChange}
-  //                       className="rounded-lg"
-  //                       required
-  //                   />
-  //                 </div>
-  //                 <div>
-  //                   <Label htmlFor="Ets_de_provenance">Établissement de provenance *</Label>
-  //                   <Input
-  //                       type="text"
-  //                       id="Ets_de_provenance"
-  //                       name="Ets_de_provenance"
-  //                       value={formData.Ets_de_provenance}
-  //                       onChange={handleChange}
-  //                       className="rounded-lg"
-  //                       required
-  //                   />
-  //                 </div>
-  //               </div>
-  //           )}
-  //
-  //           {step === 2 && (
-  //               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  //                 {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => (
-  //                     <div key={field}>
-  //                       <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>
-  //                       <Input
-  //                           type="number"
-  //                           id={field}
-  //                           name={field}
-  //                           value={formData[field] ?? ""}
-  //                           onChange={handleChange}
-  //                           min={1}
-  //                           max={20}
-  //                           step="0.5"
-  //                           className="rounded-lg"
-  //                           required
-  //                       />
-  //                     </div>
-  //                 ))}
-  //               </div>
-  //           )}
-  //
-  //           {step === 3 && (
-  //               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  //
-  //                 <div>
-  //                   <Label htmlFor="Série">Série *</Label>
-  //                   <select
-  //                       id="Série"
-  //                       name="Série"
-  //                       value={formData.Série}
-  //                       onChange={handleChange}
-  //                       className="w-full border rounded-lg p-2"
-  //                       required
-  //                   >
-  //                     <option value="" disabled>Choisir...</option>
-  //                     <option value="S1">S1</option>
-  //                     <option value="S2">S2</option>
-  //                     <option value="S3">S3</option>
-  //                   </select>
-  //                 </div>
-  //
-  //                 {["MATH", "SCPH", "FR", "PHILO", "AN"].map(field => (
-  //                     <div key={field}>
-  //                       <Label htmlFor={field}>Note en {field} *</Label>
-  //                       <Input
-  //                           type="number"
-  //                           id={field}
-  //                           name={field}
-  //                           value={formData[field] ?? ""}
-  //                           onChange={handleChange}
-  //                           min={1}
-  //                           max={20}
-  //                           step="0.5"
-  //                           className="rounded-lg"
-  //                           required
-  //                       />
-  //                     </div>
-  //                 ))}
-  //
-  //                 {/*<div>*/}
-  //                 {/*  <Label htmlFor="Mention">Mention *</Label>*/}
-  //                 {/*  <select*/}
-  //                 {/*      id="Mention"*/}
-  //                 {/*      name="Mention"*/}
-  //                 {/*      value={formData.Mention}*/}
-  //                 {/*      onChange={handleChange}*/}
-  //                 {/*      className="w-full border rounded-lg p-2"*/}
-  //                 {/*      required*/}
-  //                 {/*  >*/}
-  //                 {/*    <option value="" disabled>Choisir...</option>*/}
-  //                 {/*    <option value="Passable">Passable</option>*/}
-  //                 {/*    <option value="Assez Bien">Assez Bien</option>*/}
-  //                 {/*    <option value="Bien">Bien</option>*/}
-  //                 {/*    <option value="Très Bien">Très Bien</option>*/}
-  //                 {/*  </select>*/}
-  //                 {/*</div>*/}
-  //
-  //               </div>
-  //           )}
-  //
-  //           <div className="flex justify-between">
-  //             {step > 1 && (
-  //                 <Button type="button" onClick={handlePrev} variant="outline" className="rounded-lg">
-  //                   <ChevronLeft className="mr-2"/> Précédent
-  //                 </Button>
-  //             )}
-  //
-  //             {step < totalSteps ? (
-  //                 <Button
-  //                     type="button"
-  //                     onClick={handleNext}
-  //                     className="rounded-lg"
-  //                     disabled={!isCurrentStepValid}
-  //                 >
-  //                   Suivant <ChevronRight className="ml-2" />
-  //                 </Button>
-  //             ) : (
-  //                 <Button
-  //                     type="submit"
-  //                     disabled={isSubmitting || !isCurrentStepValid}
-  //                     className="rounded-lg"
-  //                 >
-  //                   {isSubmitting ? "Prédiction en cours..." : "Soumettre"}
-  //                 </Button>
-  //             )}
-  //           </div>
-  //         </form>
-  //       </CardContent>
-  //     </Card>
-  // );
-  //
 
   return (
       <Card className="p-4 max-w-2xl mx-auto">
@@ -555,16 +335,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                         </div>
                         <div>
                           <Label htmlFor="Résidence">Résidence *</Label>
-                          {/*<Input*/}
-                          {/*    type="text"*/}
-                          {/*    id="Résidence"*/}
-                          {/*    name="Résidence"*/}
-                          {/*    value={formData.Résidence}*/}
-                          {/*    onChange={handleChange}*/}
-                          {/*    className="rounded-lg"*/}
-                          {/*    required*/}
-                          {/*/>*/}
-
                           <select
                               id="Résidence"
                               name="Résidence"
@@ -573,37 +343,38 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                               className="w-full border rounded-lg p-2"
                               required
                           >
-                            <option value="" disabled selected>Choisir...</option>
-                            <option value="Dakar">Dakar</option>
-                            <option value="Diourbel">Diourbel</option>
-                            <option value="Fatick">Fatick</option>
-                            <option value="Kaolack">Kaolack</option>
-                            <option value="Kaffrine">Kaffrine</option>
-                            <option value="Kédougou">Kédougou</option>
-                            <option value="Kolda">Kolda</option>
-                            <option value="Louga">Louga</option>
-                            <option value="Matam">Matam</option>
-                            <option value="Saint-Louis">Saint-Louis</option>
-                            <option value="Sédhiou">Sédhiou</option>
-                            <option value="Tambacounda">Tambacounda</option>
-                            <option value="Thiès">Thiès</option>
-                            <option value="Ziguinchor">Ziguinchor</option>
-
+                            <option value="" disabled>Choisir...</option>
+                            {regions.map(region => (
+                                <option key={region.id} value={region.name}>
+                                  {region.name}
+                                </option>
+                            ))}
                           </select>
                         </div>
 
                         <div>
-                          <Label htmlFor="Ets_de_provenance">Établissement de provenance *</Label>
-                          <Input
-                              type="text"
-                              id="Ets_de_provenance"
-                              name="Ets_de_provenance"
-                              value={formData.Ets_de_provenance}
+                          <Label htmlFor="Académie_de_Ets_Prov">Académie *</Label>
+                          <select
+                              id="Académie_de_Ets_Prov"
+                              name="Académie_de_Ets_Prov"
+                              value={formData.Académie_de_Ets_Prov}
                               onChange={handleChange}
-                              className="rounded-lg"
+                              className="w-full border rounded-lg p-2"
                               required
-                          />
+                              disabled={!selectedRegionId}
+                          >
+                            <option value="" disabled>
+                              {!selectedRegionId ? "Sélectionnez d'abord une région" : "Choisir..."}
+                            </option>
+                            {academies.map(academie => (
+                                <option key={academie.id} value={academie.name}>
+                                  {academie.name}
+                                </option>
+                            ))}
+                          </select>
                         </div>
+
+
                       </div>
                   )}
 
@@ -622,7 +393,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                                   max={20}
                                   step="0.5"
                                   className="rounded-lg"
-                                  required
                               />
                             </div>
                         ))}
@@ -662,7 +432,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                                   max={20}
                                   step="0.5"
                                   className="rounded-lg"
-                                  required
                               />
                             </div>
                         ))}
@@ -740,7 +509,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         )}
       </Card>
   );
-
 
 };
 
