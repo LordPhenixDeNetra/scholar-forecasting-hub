@@ -29,24 +29,34 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
       </div>
 
       <div className="space-y-4">
+
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm text-gray-600">Probabilité d'être orienter</span>
+            <span className="font-semibold">{result.orientation_probability}%</span>
+          </div>
+          <Progress value={result.orientation_probability} className="h-2"/>
+        </div>
+
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-sm text-gray-600">Probabilité de réussite</span>
             <span className="font-semibold">{result.success_probability}%</span>
           </div>
-          <Progress value={result.success_probability} className="h-2" />
+          <Progress value={result.success_probability} className="h-2"/>
         </div>
 
+
         {/*<div className="grid grid-cols-2 gap-4">*/}
-          {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
-            {/*<span className="text-sm text-gray-600">Statut</span>*/}
-            {/*<span className="text-sm text-gray-600">Prédiction</span>*/}
-            {/*<p className="font-semibold">{result.status}</p>*/}
-          {/*</div>*/}
-          {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
-          {/*  <span className="text-sm text-gray-600">Score</span>*/}
-          {/*  <p className="font-semibold">{result.score.toFixed(2)}</p>*/}
-          {/*</div>*/}
+        {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
+        {/*<span className="text-sm text-gray-600">Statut</span>*/}
+        {/*<span className="text-sm text-gray-600">Prédiction</span>*/}
+        {/*<p className="font-semibold">{result.status}</p>*/}
+        {/*</div>*/}
+        {/*<div className="p-4 bg-gray-50 rounded-lg">*/}
+        {/*  <span className="text-sm text-gray-600">Score</span>*/}
+        {/*  <p className="font-semibold">{result.score.toFixed(2)}</p>*/}
+        {/*</div>*/}
         {/*</div>*/}
 
         {/*<div className="bg-gray-50 p-4 rounded-lg">*/}
