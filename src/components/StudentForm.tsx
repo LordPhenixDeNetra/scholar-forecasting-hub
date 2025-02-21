@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import {buildApiUrl} from "@/config/api.ts";
 
 interface StudentFormProps {
   onSubmit: (data: StudentInput) => Promise<void>;
@@ -70,7 +71,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
 
   const loadRegions = async () => {
     try {
-      const response = await fetch("http://localhost:8000/regions/");
+      const response = await fetch(buildApiUrl("/regions/"));
       if (!response.ok) throw new Error("Erreur lors du chargement des régions");
       const data = await response.json();
       setRegions(data);
@@ -86,7 +87,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
 
   const loadAcademies = async (regionId: number) => {
     try {
-      const response = await fetch(`http://localhost:8000/regions/${regionId}/academies`);
+      const response = await fetch(buildApiUrl(`/regions/${regionId}/academies`));
       if (!response.ok) throw new Error("Erreur lors du chargement des académies");
       const data = await response.json();
       setAcademies(data);

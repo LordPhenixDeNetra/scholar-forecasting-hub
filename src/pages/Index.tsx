@@ -5,6 +5,7 @@ import { PredictionResultV2 } from "@/components/PredictionResultV2";
 import { UniversityPredictionLayout } from "@/components/UniversityPredictionLayout";
 import type {StudentInput, PredictionResponseV2} from "@/types/student";
 import { useToast } from "@/hooks/use-toast";
+import {buildApiUrl} from "@/config/api.ts";
 
 const Index = () => {
   // const [predictionResult, setPredictionResult] = useState<PredictionResponse | null>(null);
@@ -15,7 +16,7 @@ const Index = () => {
   const handleSubmit = async (data: StudentInput) => {
     // ec2-3-87-44-69.compute-1.amazonaws.com
     try {
-      const response = await fetch("http://ec2-3-87-44-69.compute-1.amazonaws.com:8000/predict_v2", {
+      const response = await fetch(buildApiUrl("/predict_v2"), {
 
         method: "POST",
         headers: {
