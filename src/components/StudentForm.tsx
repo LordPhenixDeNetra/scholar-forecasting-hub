@@ -37,9 +37,9 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     Age_en_Décembre_2018: undefined,
     MATH: undefined,
     SCPH: undefined,
-    FR: undefined,
-    PHILO: undefined,
-    AN: undefined,
+    FR: 10,
+    PHILO: 10,
+    AN: 10,
     Moy_nde: undefined,
     Moy_ère: undefined,
     Moy_S_Term: undefined,
@@ -105,11 +105,20 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     loadRegions();
   }, []);
 
+  // const validateCurrentStep = (): boolean => {
+  //   const fieldsToValidate: string[] =
+  //       step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"] :
+  //           step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
+  //               ["MATH", "SCPH", "FR", "PHILO", "AN", "Série"];
+  //
+  //   return fieldsToValidate.every(field => validateField(field, formData[field]) === null);
+  // };
+
   const validateCurrentStep = (): boolean => {
     const fieldsToValidate: string[] =
         step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"] :
             step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
-                ["MATH", "SCPH", "FR", "PHILO", "AN", "Série"];
+                ["MATH", "SCPH", "FR", "Série"];
 
     return fieldsToValidate.every(field => validateField(field, formData[field]) === null);
   };
@@ -197,9 +206,9 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       Age_en_Décembre_2018: undefined,
       MATH: undefined,
       SCPH: undefined,
-      FR: undefined,
-      PHILO: undefined,
-      AN: undefined,
+      FR: 10,
+      PHILO: 10,
+      AN: 10,
       Moy_nde: undefined,
       Moy_ère: undefined,
       Moy_S_Term: undefined,
@@ -420,7 +429,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                           </select>
                         </div>
 
-                        {["MATH", "SCPH", "FR", "PHILO", "AN"].map(field => (
+                        {["MATH", "SCPH"].map(field => (
                             <div key={field}>
                               <Label htmlFor={field}>Note en {field} *</Label>
                               <Input
