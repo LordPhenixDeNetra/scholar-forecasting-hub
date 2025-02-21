@@ -54,12 +54,37 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     REGION_DE_NAISSANCE: ""
   });
 
+  // const validateField = (name: string, value: string | number | undefined): string | null => {
+  //   if (value === undefined || value === "") return "Ce champ est obligatoire.";
+  //
+  //   const numericFields = ["MATH", "SCPH", "FR", "PHILO", "AN", "Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"];
+  //   if (numericFields.includes(name) && (value < 1 || value > 20)) {
+  //     return "La valeur doit être comprise entre 1 et 20.";
+  //   }
+  //
+  //   if (name === "Age_en_Décembre_2018" && (value < 16 || value > 30)) {
+  //     return "L'âge doit être compris entre 10 et 30 ans.";
+  //   }
+  //
+  //   return null;
+  // };
+
   const validateField = (name: string, value: string | number | undefined): string | null => {
-    if (value === undefined || value === "") return "Ce champ est obligatoire.";
+    // if (value === undefined || value === "") return "Ce champ est obligatoire.";
 
     const numericFields = ["MATH", "SCPH", "FR", "PHILO", "AN", "Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"];
     if (numericFields.includes(name) && (value < 1 || value > 20)) {
       return "La valeur doit être comprise entre 1 et 20.";
+    }
+
+    // Validation spécifique pour la moyenne de seconde
+    if (name === "Moy_nde" && value < 9.5) {
+      return "La moyenne de seconde doit être supérieure à 9,5 pour passer en première";
+    }
+
+    // Validation spécifique pour la moyenne de première
+    if (name === "Moy_ère" && value < 9.5) {
+      return "La moyenne de première doit être supérieure à 9,5 pour passer en terminale";
     }
 
     if (name === "Age_en_Décembre_2018" && (value < 16 || value > 30)) {
@@ -104,15 +129,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
   useEffect(() => {
     loadRegions();
   }, []);
-
-  // const validateCurrentStep = (): boolean => {
-  //   const fieldsToValidate: string[] =
-  //       step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"] :
-  //           step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
-  //               ["MATH", "SCPH", "FR", "PHILO", "AN", "Série"];
-  //
-  //   return fieldsToValidate.every(field => validateField(field, formData[field]) === null);
-  // };
 
   const validateCurrentStep = (): boolean => {
     const fieldsToValidate: string[] =
@@ -388,26 +404,55 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                       </div>
                   )}
 
+                  {/*{step === 2 && (*/}
+                  {/*    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">*/}
+                  {/*      {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => (*/}
+                  {/*          <div key={field}>*/}
+                  {/*            <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>*/}
+                  {/*            <Input*/}
+                  {/*                type="number"*/}
+                  {/*                id={field}*/}
+                  {/*                name={field}*/}
+                  {/*                value={formData[field] ?? ""}*/}
+                  {/*                onChange={handleChange}*/}
+                  {/*                min={1}*/}
+                  {/*                max={20}*/}
+                  {/*                step="0.5"*/}
+                  {/*                className="rounded-lg"*/}
+                  {/*            />*/}
+                  {/*          </div>*/}
+                  {/*      ))}*/}
+                  {/*    </div>*/}
+                  {/*)}*/}
+
                   {step === 2 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => (
-                            <div key={field}>
-                              <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>
-                              <Input
-                                  type="number"
-                                  id={field}
-                                  name={field}
-                                  value={formData[field] ?? ""}
-                                  onChange={handleChange}
-                                  min={1}
-                                  max={20}
-                                  step="0.5"
-                                  className="rounded-lg"
-                              />
-                            </div>
-                        ))}
+                        {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => {
+                          const errorMessage = validateField(field, formData[field]);
+                          return (
+                              <div key={field} className="space-y-2">
+                                <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>
+                                <Input
+                                    type="number"
+                                    id={field}
+                                    name={field}
+                                    value={formData[field] ?? ""}
+                                    onChange={handleChange}
+                                    min={1}
+                                    max={20}
+                                    step="0.5"
+                                    className={`rounded-lg ${errorMessage ? 'border-red-500' : ''}`}
+                                />
+                                {errorMessage && (
+                                    <p className="text-sm text-red-500 mt-1">{errorMessage}</p>
+                                )}
+                              </div>
+                          );
+                        })}
                       </div>
                   )}
+
+
 
                   {step === 3 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -445,28 +490,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                               />
                             </div>
                         ))}
-
-                        {/*<div>*/}
-                        {/*  <Label htmlFor="Mention">Mention *</Label>*/}
-                        {/*  <select*/}
-                        {/*      id="Mention"*/}
-                        {/*      name="Mention"*/}
-                        {/*      value={formData.Mention}*/}
-                        {/*      onChange={handleChange}*/}
-                        {/*      className="w-full border rounded-lg p-2"*/}
-                        {/*      required*/}
-                        {/*  >*/}
-                        {/*    <option value="" disabled>Choisir...</option>*/}
-                        {/*    <option value="Passable">Passable</option>*/}
-                        {/*    <option value="Assez Bien">Assez Bien</option>*/}
-                        {/*    <option value="Bien">Bien</option>*/}
-                        {/*    <option value="Très Bien">Très Bien</option>*/}
-                        {/*  </select>*/}
-                        {/*</div>*/}
-
                       </div>
                   )}
-
                   <div className="flex justify-between">
                     {step > 1 && (
                         <Button type="button" onClick={handlePrev} variant="outline" className="rounded-lg">
@@ -495,9 +520,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                   </div>
                 </form>
               </CardContent>
-
-
-
             </>
         ) : (
             <>
@@ -519,7 +541,6 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         )}
       </Card>
   );
-
 };
 
 
