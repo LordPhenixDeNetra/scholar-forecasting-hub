@@ -330,7 +330,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                           </select>
                         </div>
                         <div>
-                          <Label htmlFor="Age_en_Décembre_2018">Âge en décembre 2018 *</Label>
+                          <Label htmlFor="Age_en_Décembre_2018">Âge *</Label>
                           <Input
                               type="number"
                               id="Age_en_Décembre_2018"

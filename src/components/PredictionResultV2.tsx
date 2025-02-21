@@ -20,7 +20,7 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
   return (
     <Card className="p-6 w-full max-w-2xl mx-auto bg-white rounded-lg shadow-sm space-y-6 animate-slideUpAndFade">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold">Résultat de la prédiction</h3>
+        <h3 className="text-xl font-semibold">Résultat des prédiction</h3>
         {result.success_probability >= 50 ? (
           <CheckCircle className="w-6 h-6 text-success" />
         ) : (
@@ -29,21 +29,31 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
       </div>
 
       <div className="space-y-4">
-
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-600">Probabilité d'être orienter</span>
+            <span className="text-sm text-gray-800">Probabilité d'être orienter</span>
             <span className="font-semibold">{result.orientation_probability}%</span>
           </div>
           <Progress value={result.orientation_probability} className="h-2"/>
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Prediction</h4>
+            <h5 className="text-sm text-gray-700">{result.orientation_probability_message}</h5>
+          </div>
         </div>
+
+        {/* Ligne de séparation */}
+        <hr className="border-t border-gray-800" />
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-600">Probabilité de réussite</span>
+            <span className="text-sm text-gray-600">Probabilité de réussite si orienter</span>
             <span className="font-semibold">{result.success_probability}%</span>
           </div>
           <Progress value={result.success_probability} className="h-2"/>
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Prediction</h4>
+            <h5 className="text-sm text-gray-700">{result.orientation_probability_message}</h5>
+          </div>
         </div>
 
 
@@ -81,11 +91,13 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
         {/*  </div>*/}
         {/*</div>*/}
 
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h4 className="font-semibold mb-2">Prediction</h4>
-          <h5 className="text-sm text-gray-700">{result.orientation_probability_message}</h5>
-          <h5 className="text-sm text-gray-700">{result.success_probability_message}</h5>
-        </div>
+        {/*<div className="bg-gray-50 p-4 rounded-lg">*/}
+        {/*  <h4 className="font-semibold mb-2">Prediction</h4>*/}
+        {/*  <h5 className="text-sm text-gray-700">{result.orientation_probability_message}</h5>*/}
+        {/*  <h5 className="text-sm text-gray-700">{result.success_probability_message}</h5>*/}
+        {/*</div>*/}
+
+
       </div>
     </Card>
   );
