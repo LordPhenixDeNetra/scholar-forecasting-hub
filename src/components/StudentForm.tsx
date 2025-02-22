@@ -37,13 +37,13 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     Age_en_Décembre_2018: undefined,
     MATH: undefined,
     SCPH: undefined,
-    FR: 10,
-    PHILO: 10,
-    AN: 10,
-    Moy_nde: undefined,
-    Moy_ère: undefined,
-    Moy_S_Term: undefined,
-    Moy_S_Term_1: undefined,
+    FR: undefined,
+    PHILO: undefined,
+    AN: undefined,
+    Moy_nde: 10,
+    Moy_ère: 10,
+    Moy_S_Term: 10,
+    Moy_S_Term_1: 10,
     Moy_Gle: undefined,
     Moy_sur_Mat_Fond: undefined,
     Moyenne_au_Grp: undefined,
@@ -51,26 +51,18 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     Ets_de_provenance: "",
     Centre_Ec: "",
     Académie_de_Ets_Prov: "",
-    REGION_DE_NAISSANCE: ""
+    REGION_DE_NAISSANCE: "",
+    SVT: undefined,
+    HG: undefined,
+    EPS: undefined,
+    AFTA: undefined,
+    COME: undefined,
+    Moyenne_BAC: undefined,
+    isInapteEPS: false,
   });
 
-  // const validateField = (name: string, value: string | number | undefined): string | null => {
-  //   if (value === undefined || value === "") return "Ce champ est obligatoire.";
-  //
-  //   const numericFields = ["MATH", "SCPH", "FR", "PHILO", "AN", "Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"];
-  //   if (numericFields.includes(name) && (value < 1 || value > 20)) {
-  //     return "La valeur doit être comprise entre 1 et 20.";
-  //   }
-  //
-  //   if (name === "Age_en_Décembre_2018" && (value < 16 || value > 30)) {
-  //     return "L'âge doit être compris entre 10 et 30 ans.";
-  //   }
-  //
-  //   return null;
-  // };
-
   const validateField = (name: string, value: string | number | undefined): string | null => {
-    // if (value === undefined || value === "") return "Ce champ est obligatoire.";
+    if (value === undefined || value === "") return "Ce champ est obligatoire.";
 
     const numericFields = ["MATH", "SCPH", "FR", "PHILO", "AN", "Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"];
     if (numericFields.includes(name) && (value < 1 || value > 20)) {
@@ -87,8 +79,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       return "La moyenne de première doit être supérieure à 9,5 pour passer en terminale";
     }
 
-    if (name === "Age_en_Décembre_2018" && (value < 16 || value > 30)) {
-      return "L'âge doit être compris entre 10 et 30 ans.";
+    if (name === "Age_en_Décembre_2018" && (value < 15 || value > 23)) {
+      return "L'âge doit être compris entre 15 et 30 ans.";
     }
 
     return null;
@@ -130,33 +122,140 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     loadRegions();
   }, []);
 
-  const validateCurrentStep = (): boolean => {
-    const fieldsToValidate: string[] =
-        step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"] :
-            step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
-                ["MATH", "SCPH", "FR", "Série"];
+  // const validateCurrentStep = (): boolean => {
+  //   const fieldsToValidate: string[] =
+  //       step === 1 ? ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"] :
+  //           step === 2 ? ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"] :
+  //               ["MATH", "SCPH", "FR", "PHILO", "AN", "Série"];
+  //
+  //   return fieldsToValidate.every(field => validateField(field, formData[field]) === null);
+  // };
 
-    return fieldsToValidate.every(field => validateField(field, formData[field]) === null);
+  // Remplacer la validation du step 3 dans validateCurrentStep
+  const validateCurrentStep = (): boolean => {
+    switch (step) {
+      case 1:
+        return ["Sexe", "Age_en_Décembre_2018", "Résidence", "Académie_de_Ets_Prov"]
+            .every(field => validateField(field, formData[field]) === null);
+      case 2:
+        return ["Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"]
+            .every(field => validateField(field, formData[field]) === null);
+      case 3:
+        return validateStep3();
+      default:
+        return false;
+    }
   };
 
-  // Calculer les moyennes automatiquement
+  const validateStep3 = (): boolean => {
+    // Si la série n'est pas sélectionnée, retourner false
+    if (!formData.Série) return false;
+
+    // Vérifier les champs de base requis pour toutes les séries
+    const baseFields = ["MATH", "SCPH", "FR", "PHILO", "AN"];
+    const baseFieldsValid = baseFields.every(field =>
+        validateField(field, formData[field]) === null
+    );
+    if (!baseFieldsValid) return false;
+
+    // Validation spécifique selon la série
+    switch (formData.Série) {
+      case "S1":
+      case "S2": {
+        // Vérifier les champs supplémentaires pour S1 et S2
+        const additionalFields = ["SVT", "HG"];
+        const additionalFieldsValid = additionalFields.every(field =>
+            validateField(field, formData[field]) === null
+        );
+        if (!additionalFieldsValid) return false;
+
+        // Vérifier EPS sauf si inapte
+        if (!formData.isInapteEPS && !formData.EPS) return false;
+        break;
+      }
+      case "S3": {
+        // Vérifier les champs supplémentaires pour S3
+        const s3Fields = ["COME", "AFTA"];
+        const s3FieldsValid = s3Fields.every(field =>
+            validateField(field, formData[field]) === null
+        );
+        if (!s3FieldsValid) return false;
+
+        // Vérifier EPS sauf si inapte
+        if (!formData.isInapteEPS && !formData.EPS) return false;
+        break;
+      }
+      default:
+        return false;
+    }
+
+    // Vérifier la moyenne du BAC
+    if (!formData.Moyenne_BAC) return false;
+
+    // Calculer et vérifier la moyenne
+    const calculatedAverage = calculateSerieAverage(formData.Série, formData, formData.isInapteEPS);
+    if (calculatedAverage === null) return false;
+
+    // Vérifier si la moyenne correspond à celle saisie
+    if (Math.abs(calculatedAverage - formData.Moyenne_BAC) > 0.01) return false;
+
+    // Vérifier si la moyenne est suffisante pour l'orientation
+    if (calculatedAverage < 10) return false;
+
+    return true;
+  };
+
+  // // Calculer les moyennes automatiquement
+  // useEffect(() => {
+  //   setFormData(prev => {
+  //     const moyenneGenerale = (
+  //         ((prev.Moy_S_Term_1 || 0) + (prev.Moy_S_Term || 0)) / 2 +
+  //         ((prev.Moy_nde || 0) + (prev.Moy_ère || 0))
+  //     ) / 3;
+  //
+  //     const moyenneMatieresFondamentales = ((prev.MATH || 0) + (prev.SCPH || 0)) / 2;
+  //
+  //     return {
+  //       ...prev,
+  //       Moy_Gle: parseFloat(moyenneGenerale.toFixed(2)),
+  //       Moy_sur_Mat_Fond: parseFloat(moyenneMatieresFondamentales.toFixed(2)),
+  //       Moyenne_au_Grp: parseFloat(moyenneGenerale.toFixed(2))
+  //     };
+  //   });
+  // }, [formData.Moy_S_Term_1, formData.Moy_S_Term, formData.Moy_nde, formData.Moy_ère, formData.MATH, formData.SCPH]);
+
   useEffect(() => {
     setFormData(prev => {
-      const moyenneGenerale = (
-          ((prev.Moy_S_Term_1 || 0) + (prev.Moy_S_Term || 0)) / 2 +
-          ((prev.Moy_nde || 0) + (prev.Moy_ère || 0))
-      ) / 3;
+      let moyenneMatieresFondamentales;
 
-      const moyenneMatieresFondamentales = ((prev.MATH || 0) + (prev.SCPH || 0)) / 2;
+      if (prev.Série === "S1") {
+        // Pour S1: MATH(8) et PC(8)
+        const sumNotes = (prev.MATH || 0) * 8 + (prev.SCPH || 0) * 8;
+        const sumCoef = 16; // 8 + 8
+        moyenneMatieresFondamentales = sumNotes / sumCoef;
+      } else if (prev.Série === "S2") {
+        // Pour S2: MATH(5), PC(6) et SVT(6)
+        const sumNotes = (prev.MATH || 0) * 5 + (prev.SCPH || 0) * 6 + (prev.SVT || 0) * 6;
+        const sumCoef = 17; // 5 + 6 + 6
+        moyenneMatieresFondamentales = sumNotes / sumCoef;
+      } else if (prev.Série === "S3") {
+        // Pour S3: MATH(8), PC(8) et COME(8)
+        const sumNotes = (prev.MATH || 0) * 8 + (prev.SCPH || 0) * 8 + (prev.COME || 0) * 8;
+        const sumCoef = 24; // 8 + 8 + 8
+        moyenneMatieresFondamentales = sumNotes / sumCoef;
+      }
+
+      const moyenneGenerale = calculateSerieAverage(prev.Série, prev, prev.isInapteEPS);
 
       return {
         ...prev,
-        Moy_Gle: parseFloat(moyenneGenerale.toFixed(2)),
-        Moy_sur_Mat_Fond: parseFloat(moyenneMatieresFondamentales.toFixed(2)),
-        Moyenne_au_Grp: parseFloat(moyenneGenerale.toFixed(2))
+        Moy_Gle: moyenneGenerale || 0,
+        Moy_sur_Mat_Fond: parseFloat(moyenneMatieresFondamentales?.toFixed(2) || "0"),
+        Moyenne_au_Grp: moyenneGenerale || 0
       };
     });
-  }, [formData.Moy_S_Term_1, formData.Moy_S_Term, formData.Moy_nde, formData.Moy_ère, formData.MATH, formData.SCPH]);
+  }, [formData.Série, formData.MATH, formData.SCPH, formData.SVT, formData.FR, formData.AN,
+    formData.PHILO, formData.EPS, formData.HG, formData.COME, formData.AFTA, formData.isInapteEPS]);
 
   // Valider le formulaire à chaque changement
   useEffect(() => {
@@ -164,6 +263,70 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     setIsCurrentStepValid(isValid);
   }, [formData, step]);
 
+
+  const calculateSerieAverage = (serie: string, notes: any, isInapteEPS: boolean): number | null => {
+    const hasAllRequiredNotes = (requiredFields: string[]) => {
+      return requiredFields.every(field =>
+          field === 'EPS' ? (isInapteEPS || notes[field]) : notes[field]
+      );
+    };
+
+    if (serie === "S1") {
+      const requiredFields = ['MATH', 'SCPH', 'SVT', 'FR', 'AN', 'PHILO', 'EPS', 'HG'];
+      if (!hasAllRequiredNotes(requiredFields)) return null;
+
+      const total =
+          (notes.MATH || 0) * 8 +
+          (notes.SCPH || 0) * 8 +
+          (notes.SVT || 0) * 2 +
+          (notes.FR || 0) * 3 +
+          (notes.AN || 0) * 2 +
+          (notes.PHILO || 0) * 2 +
+          (isInapteEPS ? 0 : (notes.EPS || 0)) * (isInapteEPS ? 0 : 1) +
+          (notes.HG || 0) * 2;
+
+      const totalCoef = isInapteEPS ? 27 : 28; // Ajuster le coefficient total si inapte en EPS
+      return parseFloat((total / totalCoef).toFixed(2));
+    }
+
+    if (serie === "S2") {
+      const requiredFields = ['MATH', 'SCPH', 'SVT', 'FR', 'AN', 'PHILO', 'EPS', 'HG'];
+      if (!hasAllRequiredNotes(requiredFields)) return null;
+
+      const total =
+          (notes.MATH || 0) * 5 +
+          (notes.SCPH || 0) * 6 +
+          (notes.SVT || 0) * 6 +
+          (notes.FR || 0) * 3 +
+          (notes.AN || 0) * 2 +
+          (notes.PHILO || 0) * 2 +
+          (isInapteEPS ? 0 : (notes.EPS || 0)) * (isInapteEPS ? 0 : 1) +
+          (notes.HG || 0) * 2;
+
+      const totalCoef = isInapteEPS ? 26 : 27;
+      return parseFloat((total / totalCoef).toFixed(2));
+    }
+
+    if (serie === "S3") {
+      const requiredFields = ['MATH', 'SCPH', 'COME', 'AFTA', 'FR', 'AN', 'PHILO', 'EPS'];
+      if (!hasAllRequiredNotes(requiredFields)) return null;
+
+      const total =
+          (notes.MATH || 0) * 8 +
+          (notes.SCPH || 0) * 8 +
+          (notes.COME || 0) * 8 +
+          (notes.AFTA || 0) * 3 +
+          (notes.FR || 0) * 3 +
+          (notes.AN || 0) * 2 +
+          (notes.PHILO || 0) * 2 +
+          (isInapteEPS ? 0 : (notes.EPS || 0)) * (isInapteEPS ? 0 : 1);
+
+      const totalCoef = isInapteEPS ? 34 : 35;
+      return parseFloat((total / totalCoef).toFixed(2));
+    }
+
+    return null;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -189,10 +352,29 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
 
 
 
+  // const handleNext = () => {
+  //   const isValid = validateCurrentStep();
+  //   if (isValid) {
+  //     setStep(prev => Math.min(prev + 1, totalSteps));
+  //     window.scrollTo({ top: 0, behavior: 'smooth' });
+  //   } else {
+  //     toast({
+  //       title: "Erreur de validation",
+  //       description: "Veuillez remplir tous les champs requis avant de continuer.",
+  //       variant: "destructive"
+  //     });
+  //   }
+  // };
+
   const handleNext = () => {
     const isValid = validateCurrentStep();
     if (isValid) {
-      setStep(prev => Math.min(prev + 1, totalSteps));
+      // Si on est à l'étape 1, passer directement à l'étape 3
+      if (step === 1) {
+        setStep(3);
+      } else {
+        setStep(prev => Math.min(prev + 1, totalSteps));
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       toast({
@@ -203,8 +385,18 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     }
   };
 
+  // const handlePrev = () => {
+  //   setStep(prev => Math.max(prev - 1, 1));
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // };
+
   const handlePrev = () => {
-    setStep(prev => Math.max(prev - 1, 1));
+    // Si on est à l'étape 3, revenir directement à l'étape 1
+    if (step === 3) {
+      setStep(1);
+    } else {
+      setStep(prev => Math.max(prev - 1, 1));
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -222,13 +414,13 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       Age_en_Décembre_2018: undefined,
       MATH: undefined,
       SCPH: undefined,
-      FR: 10,
-      PHILO: 10,
-      AN: 10,
-      Moy_nde: undefined,
-      Moy_ère: undefined,
-      Moy_S_Term: undefined,
-      Moy_S_Term_1: undefined,
+      FR: undefined,
+      PHILO: undefined,
+      AN: undefined,
+      Moy_nde: 10,
+      Moy_ère: 10,
+      Moy_S_Term: 10,
+      Moy_S_Term_1: 10,
       Moy_Gle: undefined,
       Moy_sur_Mat_Fond: undefined,
       Moyenne_au_Grp: undefined,
@@ -236,7 +428,14 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
       Ets_de_provenance: "",
       Centre_Ec: "",
       Académie_de_Ets_Prov: "",
-      REGION_DE_NAISSANCE: ""
+      REGION_DE_NAISSANCE: "",
+      SVT: undefined,
+      HG: undefined,
+      EPS: undefined,
+      AFTA: undefined,
+      COME: undefined,
+      Moyenne_BAC: undefined,
+      isInapteEPS: false,
     });
   };
 
@@ -253,15 +452,16 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     }
 
     setIsSubmitting(true);
-    toast({
-      title: "Traitement en cours",
-      description: "Veuillez patienter pendant la prédiction...",
-      duration: 2000,
-    });
 
     try {
       const preparedData = {
-        ...formData,
+        Année_BAC: 2018,
+        Groupe_Résultat: 1,
+        Mention: formData.Mention,
+        Nbre_Fois_au_BAC: 1,
+        Tot_Pts_au_Grp: formData.Tot_Pts_au_Grp || 0,
+        Sexe: formData.Sexe,
+        Série: formData.Série,
         Age_en_Décembre_2018: Number(formData.Age_en_Décembre_2018),
         MATH: Number(formData.MATH),
         SCPH: Number(formData.SCPH),
@@ -272,22 +472,59 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
         Moy_ère: Number(formData.Moy_ère),
         Moy_S_Term: Number(formData.Moy_S_Term),
         Moy_S_Term_1: Number(formData.Moy_S_Term_1),
-        Année_BAC: 2018,
-        Nbre_Fois_au_BAC: 1,
-        Groupe_Résultat: 1,
-        Tot_Pts_au_Grp: formData.Tot_Pts_au_Grp || 0
+        Moy_Gle: Number(formData.Moy_Gle),
+        Moy_sur_Mat_Fond: Number(formData.Moy_sur_Mat_Fond),
+        Moyenne_au_Grp: Number(formData.Moyenne_au_Grp),
+        Résidence: formData.Résidence,
+        Ets_de_provenance: formData.Ets_de_provenance || "",
+        Centre_Ec: formData.Centre_Ec || "",
+        Académie_de_Ets_Prov: formData.Académie_de_Ets_Prov,
+        REGION_DE_NAISSANCE: formData.REGION_DE_NAISSANCE || ""
       };
 
+      // Calculer la moyenne selon la série sélectionnée
+      if (formData.Série) {
+        const calculatedAverage = calculateSerieAverage(formData.Série, formData, formData.isInapteEPS);
+        if (calculatedAverage !== null && formData.Moyenne_BAC) {
+          // Vérifier si la moyenne calculée correspond à la moyenne saisie
+          if (Math.abs(calculatedAverage - formData.Moyenne_BAC) > 0.01) {
+            toast({
+              title: "Erreur de validation",
+              description: "La moyenne calculée ne correspond pas à la moyenne saisie au BAC",
+              variant: "destructive"
+            });
+            setIsSubmitting(false);
+            return;
+          }
+
+          // Vérifier si la moyenne est suffisante pour l'orientation
+          if (calculatedAverage < 10) {
+            toast({
+              title: "Erreur de validation",
+              description: "La moyenne est insuffisante pour l'orientation (inférieure à 10)",
+              variant: "destructive"
+            });
+            setIsSubmitting(false);
+            return;
+          }
+        }
+      }
+
+      // Log pour débogage
+      console.log("Données préparées pour soumission:", preparedData);
+
+      // Appel à la fonction de soumission du composant parent
       await onSubmit(preparedData);
-      setIsSubmitted(true); // Marquer comme soumis après succès
+      setIsSubmitted(true);
 
       toast({
         title: "Prédiction réussie",
         description: "Les résultats ont été calculés avec succès !",
         duration: 3000,
       });
+
     } catch (error) {
-      console.error("Erreur de soumission:", error);
+      console.error("Erreur détaillée:", error);
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de la prédiction. Veuillez réessayer.",
@@ -299,19 +536,35 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     }
   };
 
-
   return (
       <Card className="p-4 max-w-2xl mx-auto">
         {!isSubmitted ? (
             <>
               <CardHeader>
+
+                {/*<CardTitle>*/}
+                {/*  {(() => {*/}
+                {/*    switch (step) {*/}
+                {/*      case 1:*/}
+                {/*        return "Informations Personnelles";*/}
+                {/*      case 2:*/}
+                {/*        return "Moyennes Scolaires";*/}
+                {/*      case 3:*/}
+                {/*        return "Notes et Informations BAC";*/}
+                {/*      default:*/}
+                {/*        return "";*/}
+                {/*    }*/}
+                {/*  })()}*/}
+                {/*  <span className="text-gray-500 text-sm ml-2">*/}
+                {/*    (Étape {step} sur {totalSteps})*/}
+                {/*  </span>*/}
+                {/*</CardTitle>*/}
+
                 <CardTitle>
                   {(() => {
                     switch (step) {
                       case 1:
                         return "Informations Personnelles";
-                      case 2:
-                        return "Moyennes Scolaires";
                       case 3:
                         return "Notes et Informations BAC";
                       default:
@@ -319,14 +572,23 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                     }
                   })()}
                   <span className="text-gray-500 text-sm ml-2">
-              (Étape {step} sur {totalSteps})
-            </span>
+                      (Étape {step === 3 ? "2" : "1"} sur 2)
+                  </span>
                 </CardTitle>
+
+
               </CardHeader>
 
 
               <CardContent>
-                <Progress value={(step / totalSteps) * 100} className="mb-4 h-2" />
+
+                {/*<Progress value={(step / totalSteps) * 100} className="mb-4 h-2" />*/}
+
+                <Progress
+                    value={step === 1 ? 33 : step === 3 ? 100 : 0}
+                    className="mb-4 h-2"
+                />
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {step === 1 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -456,7 +718,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
 
                   {step === 3 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
+                        {/* Sélection de la série */}
                         <div>
                           <Label htmlFor="Série">Série *</Label>
                           <select
@@ -474,7 +736,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                           </select>
                         </div>
 
-                        {["MATH", "SCPH"].map(field => (
+                        {/* Notes de base communes à toutes les séries */}
+                        {["MATH", "SCPH", "FR", "AN", "PHILO"].map(field => (
                             <div key={field}>
                               <Label htmlFor={field}>Note en {field} *</Label>
                               <Input
@@ -487,11 +750,154 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                                   max={20}
                                   step="0.5"
                                   className="rounded-lg"
+                                  required
                               />
                             </div>
                         ))}
+
+                        {/* Champs spécifiques pour S1 et S2 */}
+                        {(formData.Série === "S1" || formData.Série === "S2") && (
+                            <>
+                              {["SVT", "HG"].map(field => (
+                                  <div key={field}>
+                                    <Label htmlFor={field}>Note en {field} *</Label>
+                                    <Input
+                                        type="number"
+                                        id={field}
+                                        name={field}
+                                        value={formData[field] ?? ""}
+                                        onChange={handleChange}
+                                        min={1}
+                                        max={20}
+                                        step="0.5"
+                                        className="rounded-lg"
+                                        required
+                                    />
+                                  </div>
+                              ))}
+                            </>
+                        )}
+
+                        {/* Champs spécifiques pour S3 */}
+                        {formData.Série === "S3" && (
+                            <>
+                              {["COME", "AFTA"].map(field => (
+                                  <div key={field}>
+                                    <Label htmlFor={field}>Note en {field} *</Label>
+                                    <Input
+                                        type="number"
+                                        id={field}
+                                        name={field}
+                                        value={formData[field] ?? ""}
+                                        onChange={handleChange}
+                                        min={1}
+                                        max={20}
+                                        step="0.5"
+                                        className="rounded-lg"
+                                        required
+                                    />
+                                  </div>
+                              ))}
+                            </>
+                        )}
+
+                        {/* Gestion EPS avec option d'inaptitude */}
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <Label htmlFor="EPS">Note en EPS</Label>
+                            <label className="flex items-center space-x-2">
+                              <input
+                                  type="checkbox"
+                                  checked={formData.isInapteEPS}
+                                  onChange={(e) => {
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      isInapteEPS: e.target.checked,
+                                      EPS: e.target.checked ? undefined : prev.EPS
+                                    }));
+                                  }}
+                                  className="form-checkbox h-4 w-4 text-primary rounded border-gray-300"
+                              />
+                              <span className="text-sm text-gray-600">Inapte</span>
+                            </label>
+                          </div>
+                          <Input
+                              type="number"
+                              id="EPS"
+                              name="EPS"
+                              value={formData.EPS ?? ""}
+                              onChange={handleChange}
+                              min={1}
+                              max={20}
+                              step="0.5"
+                              className="rounded-lg"
+                              disabled={formData.isInapteEPS}
+                              required={!formData.isInapteEPS}
+                          />
+                        </div>
+
+                        {/* Saisie de la moyenne BAC */}
+                        <div>
+                          <Label htmlFor="Moyenne_BAC">Moyenne au BAC *</Label>
+                          <Input
+                              type="number"
+                              id="Moyenne_BAC"
+                              name="Moyenne_BAC"
+                              value={formData.Moyenne_BAC ?? ""}
+                              onChange={handleChange}
+                              min={0}
+                              max={20}
+                              step="0.01"
+                              className="rounded-lg"
+                              required
+                          />
+                        </div>
+
+                        {/* Affichage des moyennes et validations */}
+                        {formData.Série && formData.Moyenne_BAC && (
+                            <div className="col-span-full mt-4 p-4 bg-gray-50 rounded-lg space-y-2">
+                              {/*<div className="flex items-center justify-between">*/}
+                              {/*  <span>Moyenne calculée :</span>*/}
+                              {/*  <span className="font-semibold">*/}
+                              {/*    {calculateSerieAverage(formData.Série, formData, formData.isInapteEPS)?.toFixed(2)}*/}
+                              {/*  </span>*/}
+                              {/*</div>*/}
+                              <div className="flex items-center justify-between">
+                                <span>Moyenne saisie :</span>
+                                <span className="font-semibold">{formData.Moyenne_BAC}</span>
+                              </div>
+                              {calculateSerieAverage(formData.Série, formData, formData.isInapteEPS) !== null && (
+                                  <>
+                                    {Math.abs(calculateSerieAverage(formData.Série, formData, formData.isInapteEPS)! - formData.Moyenne_BAC) > 0.01 && (
+                                        <p className="text-red-500 text-sm mt-2">
+                                          ⚠️ La moyenne calculée ne correspond pas à la moyenne saisie
+                                        </p>
+                                    )}
+                                    {calculateSerieAverage(formData.Série, formData, formData.isInapteEPS)! < 10 && (
+                                        <p className="text-red-500 text-sm mt-2">
+                                          ⚠️ Moyenne insuffisante pour l'orientation (inférieure à 10)
+                                        </p>
+                                    )}
+                                  </>
+                              )}
+                            </div>
+                        )}
+
+                        {/*/!* Bouton de soumission *!/*/}
+                        {/*<div className="col-span-full">*/}
+                        {/*  <Button*/}
+                        {/*      type="submit"*/}
+                        {/*      disabled={isSubmitting || !isCurrentStepValid}*/}
+                        {/*      className="w-full rounded-lg"*/}
+                        {/*  >*/}
+                        {/*    {isSubmitting ? "Prédiction en cours..." : "Soumettre"}*/}
+                        {/*  </Button>*/}
+                        {/*</div>*/}
+
                       </div>
                   )}
+
+
                   <div className="flex justify-between">
                     {step > 1 && (
                         <Button type="button" onClick={handlePrev} variant="outline" className="rounded-lg">
@@ -518,6 +924,8 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                         </Button>
                     )}
                   </div>
+
+
                 </form>
               </CardContent>
             </>
