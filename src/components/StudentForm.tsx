@@ -668,51 +668,30 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
 
                   {/*{step === 2 && (*/}
                   {/*    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">*/}
-                  {/*      {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => (*/}
-                  {/*          <div key={field}>*/}
-                  {/*            <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>*/}
-                  {/*            <Input*/}
-                  {/*                type="number"*/}
-                  {/*                id={field}*/}
-                  {/*                name={field}*/}
-                  {/*                value={formData[field] ?? ""}*/}
-                  {/*                onChange={handleChange}*/}
-                  {/*                min={1}*/}
-                  {/*                max={20}*/}
-                  {/*                step="0.5"*/}
-                  {/*                className="rounded-lg"*/}
-                  {/*            />*/}
-                  {/*          </div>*/}
-                  {/*      ))}*/}
+                  {/*      {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => {*/}
+                  {/*        const errorMessage = validateField(field, formData[field]);*/}
+                  {/*        return (*/}
+                  {/*            <div key={field} className="space-y-2">*/}
+                  {/*              <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>*/}
+                  {/*              <Input*/}
+                  {/*                  type="number"*/}
+                  {/*                  id={field}*/}
+                  {/*                  name={field}*/}
+                  {/*                  value={formData[field] ?? ""}*/}
+                  {/*                  onChange={handleChange}*/}
+                  {/*                  min={1}*/}
+                  {/*                  max={20}*/}
+                  {/*                  step="0.5"*/}
+                  {/*                  className={`rounded-lg ${errorMessage ? 'border-red-500' : ''}`}*/}
+                  {/*              />*/}
+                  {/*              {errorMessage && (*/}
+                  {/*                  <p className="text-sm text-red-500 mt-1">{errorMessage}</p>*/}
+                  {/*              )}*/}
+                  {/*            </div>*/}
+                  {/*        );*/}
+                  {/*      })}*/}
                   {/*    </div>*/}
                   {/*)}*/}
-
-                  {step === 2 && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {["Moy_nde", "Moy_ère", "Moy_S_Term_1", "Moy_S_Term"].map(field => {
-                          const errorMessage = validateField(field, formData[field]);
-                          return (
-                              <div key={field} className="space-y-2">
-                                <Label htmlFor={field}>{field.replace(/_/g, ' ')} *</Label>
-                                <Input
-                                    type="number"
-                                    id={field}
-                                    name={field}
-                                    value={formData[field] ?? ""}
-                                    onChange={handleChange}
-                                    min={1}
-                                    max={20}
-                                    step="0.5"
-                                    className={`rounded-lg ${errorMessage ? 'border-red-500' : ''}`}
-                                />
-                                {errorMessage && (
-                                    <p className="text-sm text-red-500 mt-1">{errorMessage}</p>
-                                )}
-                              </div>
-                          );
-                        })}
-                      </div>
-                  )}
 
 
 
