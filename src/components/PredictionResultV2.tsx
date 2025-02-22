@@ -20,7 +20,7 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
   return (
     <Card className="p-6 w-full max-w-2xl mx-auto bg-white rounded-lg shadow-sm space-y-6 animate-slideUpAndFade">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold">Résultat des prédiction</h3>
+        <h3 className="text-xl font-semibold">Résultat des prédictions</h3>
         {result.success_probability >= 50 ? (
           <CheckCircle className="w-6 h-6 text-success" />
         ) : (
@@ -31,7 +31,7 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
       <div className="space-y-4">
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-950">Probabilité d'être orienter vers la  filières</span>
+            <span className="text-sm text-gray-950">Probabilité d'être orienté vers la  filière</span>
             <span className="font-semibold">{result.orientation_probability}%</span>
           </div>
           <Progress value={result.orientation_probability} className="h-2"/>
@@ -46,7 +46,7 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-950">Probabilité de Réussite en Première Année (L1) pour la  filières</span>
+            <span className="text-sm text-gray-950">Probabilité de Réussite en Première Année (L1) pour la  filière</span>
             <span className="font-semibold">{result.success_probability}%</span>
           </div>
           <Progress value={result.success_probability} className="h-2"/>
