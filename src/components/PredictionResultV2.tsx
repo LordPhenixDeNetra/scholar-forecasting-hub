@@ -31,13 +31,13 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
       <div className="space-y-4">
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-800">Probabilité d'être orienter vers la  filières</span>
+            <span className="text-sm text-gray-950">Probabilité d'être orienter vers la  filières</span>
             <span className="font-semibold">{result.orientation_probability}%</span>
           </div>
           <Progress value={result.orientation_probability} className="h-2"/>
           <div className="bg-gray-50 p-4 rounded-lg">
             <h4 className="font-semibold mb-2">Prediction</h4>
-            <h5 className="text-sm text-gray-700">{result.orientation_probability_message}</h5>
+            <h5 className="text-sm text-gray-950">{result.orientation_probability_message}</h5>
           </div>
         </div>
 
@@ -46,13 +46,13 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-600">Probabilité de Réussite en Première Année(L1) pour la  filières</span>
+            <span className="text-sm text-gray-950">Probabilité de Réussite en Première Année (L1) pour la  filières</span>
             <span className="font-semibold">{result.success_probability}%</span>
           </div>
           <Progress value={result.success_probability} className="h-2"/>
           <div className="bg-gray-50 p-4 rounded-lg">
             <h4 className="font-semibold mb-2">Prediction</h4>
-            <h5 className="text-sm text-gray-700">{result.success_probability_message}</h5>
+            <h5 className="text-sm text-gray-950">{result.success_probability_message}</h5>
           </div>
         </div>
 
