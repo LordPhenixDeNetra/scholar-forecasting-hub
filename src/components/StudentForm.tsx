@@ -62,7 +62,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
   });
 
   const validateField = (name: string, value: string | number | undefined): string | null => {
-    if (value === undefined || value === "") return "Ce champ est obligatoire.";
+    // if (value === undefined || value === "") return "Ce champ est obligatoire.";
 
     const numericFields = ["MATH", "SCPH", "FR", "PHILO", "AN", "Moy_nde", "Moy_ère", "Moy_S_Term", "Moy_S_Term_1"];
     if (numericFields.includes(name) && (value < 1 || value > 20)) {
@@ -80,7 +80,7 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
     }
 
     if (name === "Age_en_Décembre_2018" && (value < 15 || value > 23)) {
-      return "L'âge doit être compris entre 15 et 30 ans.";
+      return "L'âge doit être entre 15 et 23 ans.";
     }
 
     return null;
@@ -613,13 +613,17 @@ export const StudentForm = ({ onSubmit }: StudentFormProps) => {
                               type="number"
                               id="Age_en_Décembre_2018"
                               name="Age_en_Décembre_2018"
-                              value={formData.Age_en_Décembre_2018 ?? ""}
+                              value={formData["Age_en_Décembre_2018"] ?? ""}
                               onChange={handleChange}
                               min={10}
                               max={30}
                               className="rounded-lg"
                               required
                           />
+                          {(() => {
+                            const errorMessage = validateField("Age_en_Décembre_2018", formData["Age_en_Décembre_2018"]);
+                            return errorMessage ? <p className="text-sm text-red-500 mt-1">{errorMessage}</p> : null;
+                          })()}
                         </div>
                         <div>
                           <Label htmlFor="Résidence">Résidence *</Label>
