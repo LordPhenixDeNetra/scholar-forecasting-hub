@@ -17,6 +17,16 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
   };
 
 
+  const getSuccessProbabilityMessagePad = (probability: number): string => {
+    if (probability == 49) return " inférieur à ";
+    if (probability == 50) return " supérieur à ";
+    if (probability == 70) return " supérieur à ";
+    if (probability == 95) return " supérieur à ";
+    return "supérieur à";
+  };
+
+
+
   return (
     <Card className="p-6 w-full max-w-2xl mx-auto bg-white rounded-lg shadow-sm space-y-6 animate-slideUpAndFade">
       <div className="flex items-center justify-between">
@@ -46,8 +56,16 @@ export const PredictionResultV2 = ({ result }: PredictionResultProps) => {
 
         <div>
           <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-950">Probabilité de Réussite en Première Année (L1) pour la  filière</span>
-            <span className="font-semibold">{result.success_probability}%</span>
+            <span className="text-sm text-gray-950">
+              Probabilité de Réussite en Première Année (L1) pour la  filière est
+              <span>{getSuccessProbabilityMessagePad(result.success_probability)}</span>
+            </span>
+
+            {/*<span className="font-semibold">{result.success_probability}%</span>*/}
+            <span className="font-semibold">
+              {result.success_probability === 49 ? result.success_probability + 1 : result.success_probability}%
+            </span>
+
           </div>
           <Progress value={result.success_probability} className="h-2"/>
           <div className="bg-gray-50 p-4 rounded-lg">
